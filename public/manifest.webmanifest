@@ -1,0 +1,20 @@
+{
+  "name": "Vallordocs",
+  "short_name": "Vallordocs",
+  "description": "Fuvarlevelek és szállítási dokumentumok rögzítése, helyreállítása és offline feltöltése sofőröknek.",
+  "lang": "hu",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

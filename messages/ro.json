@@ -36,6 +36,23 @@
     "retrying": "Se reîncearcă",
     "cancelled": "Anulat"
   },
+  "tripStatus": {
+    "planned": "Planificat",
+    "in_progress": "În desfășurare",
+    "completed": "Finalizat",
+    "cancelled": "Anulat"
+  },
+  "driverStatus": {
+    "active": "Activ",
+    "inactive": "Inactiv",
+    "suspended": "Suspendat"
+  },
+  "userStatus": {
+    "active": "Activ",
+    "invited": "Invitat",
+    "suspended": "Suspendat",
+    "disabled": "Dezactivat"
+  },
   "errors": {
     "generic": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou mai târziu.",
     "unauthorized": "Nu aveți permisiunea pentru această acțiune.",
@@ -45,6 +62,20 @@
     "rateLimited": "Prea multe cereri. Vă rugăm să așteptați puțin.",
     "validation": "Date invalide.",
     "weakPassword": "Parola nu îndeplinește cerințele de securitate. Trebuie să aibă cel puțin 12 caractere și să conțină litere mici, mari, cifre și caractere speciale."
+  },
+  "validation": {
+    "nameTooShort": "Numele trebuie să aibă cel puțin 2 caractere.",
+    "email": "Adresă de e-mail invalidă.",
+    "phone": "Număr de telefon invalid.",
+    "rolesRequired": "Este necesar cel puțin un rol.",
+    "driverCodeRequired": "Codul șoferului este obligatoriu.",
+    "driverCode": "Cod de șofer invalid. Sunt permise doar litere, cifre și cratimă.",
+    "tripNumberRequired": "Numărul transportului este obligatoriu.",
+    "arrivalBeforeDeparture": "Sosirea nu poate fi înainte de plecare.",
+    "invalidTripTransition": "Tranziție de stare a transportului invalidă.",
+    "integer": "Introduceți un număr întreg.",
+    "positive": "Introduceți un număr pozitiv.",
+    "min": "Valoarea introdusă este prea mică."
   },
   "auth": {
     "signIn": "Autentificare",
@@ -68,5 +99,48 @@
     "issue_disallowed_content": "Acest tip de fișier nu poate fi încărcat.",
     "issue_mime_mismatch": "Tipul MIME declarat nu corespunde conținutului fișierului.",
     "issue_extension_content_mismatch": "Extensia nu corespunde conținutului real al fișierului."
+  },
+  "notifications": {
+    "aiQueued": {
+      "title": "Încărcat",
+      "message": "Documentul a fost pus în coadă pentru procesare."
+    },
+    "aiProcessing": {
+      "title": "În procesare",
+      "message": "AI procesează documentul."
+    },
+    "aiGeneratingPdf": {
+      "title": "Se generează PDF",
+      "message": "Se generează PDF-ul documentului."
+    },
+    "aiDone": {
+      "title": "Finalizat",
+      "message": "Procesarea documentului s-a încheiat."
+    },
+    "aiFailed": {
+      "title": "Eșuat",
+      "message": "Procesarea documentului a eșuat."
+    },
+    "aiRetrying": {
+      "title": "Se reîncearcă",
+      "message": "Sistemul reîncearcă procesarea."
+    },
+    "aiCancelled": {
+      "title": "Anulat",
+      "message": "Procesarea a fost anulată."
+    }
+  },
+  "offline": {
+    "banner": "Fără conexiune la internet. Documentele vor fi salvate și sincronizate automat.",
+    "status": {
+      "pending": "În așteptarea sincronizării",
+      "in_flight": "Se sincronizează…",
+      "failed": "Eșuat",
+      "done": "Sincronizat"
+    }
+  },
+  "pwa": {
+    "updateAvailable": "O versiune nouă este disponibilă. Actualizează.",
+    "installPrompt": "Instalați aplicația Vallordocs pentru acces mai rapid."
   }
 }

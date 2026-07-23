@@ -36,6 +36,23 @@
     "retrying": "Újrapróbálás",
     "cancelled": "Megszakítva"
   },
+  "tripStatus": {
+    "planned": "Tervezett",
+    "in_progress": "Folyamatban",
+    "completed": "Befejezett",
+    "cancelled": "Megszakítva"
+  },
+  "driverStatus": {
+    "active": "Aktív",
+    "inactive": "Inaktív",
+    "suspended": "Felfüggesztve"
+  },
+  "userStatus": {
+    "active": "Aktív",
+    "invited": "Meghívva",
+    "suspended": "Felfüggesztve",
+    "disabled": "Letiltva"
+  },
   "errors": {
     "generic": "Váratlan hiba történt. Kérjük, próbálja újra később.",
     "unauthorized": "Nincs jogosultsága ehhez a művelethez.",
@@ -45,6 +62,20 @@
     "rateLimited": "Túl sok kérés. Kérjük, várjon egy kicsit.",
     "validation": "Érvénytelen adatok.",
     "weakPassword": "A jelszó nem felel meg a biztonsági követelményeknek. Legyen legalább 12 karakter hosszú, és tartalmazzon kis- és nagybetűt, számot és speciális karaktert."
+  },
+  "validation": {
+    "nameTooShort": "A név legalább 2 karakter hosszú legyen.",
+    "email": "Érvénytelen e-mail cím.",
+    "phone": "Érvénytelen telefonszám.",
+    "rolesRequired": "Legalább egy szerepkör megadása kötelező.",
+    "driverCodeRequired": "A sofőrkód megadása kötelező.",
+    "driverCode": "Érvénytelen sofőrkód. Csak betűk, számok és kötőjel engedélyezett.",
+    "tripNumberRequired": "A fuvarszám megadása kötelező.",
+    "arrivalBeforeDeparture": "Az érkezés nem lehet korábbi az indulásnál.",
+    "invalidTripTransition": "Érvénytelen fuvarstátusz-váltás.",
+    "integer": "Egész számot adjon meg.",
+    "positive": "Pozitív számot adjon meg.",
+    "min": "A megadott érték túl kicsi."
   },
   "auth": {
     "signIn": "Bejelentkezés",
@@ -68,5 +99,48 @@
     "issue_disallowed_content": "Ez a fájltípus nem tölthető fel.",
     "issue_mime_mismatch": "A deklarált MIME-típus nem egyezik a fájl tartalmával.",
     "issue_extension_content_mismatch": "A kiterjesztés nem egyezik a fájl tényleges tartalmával."
+  },
+  "notifications": {
+    "aiQueued": {
+      "title": "Feltöltve",
+      "message": "A dokumentum sorba került feldolgozásra."
+    },
+    "aiProcessing": {
+      "title": "Feldolgozás alatt",
+      "message": "Az AI feldolgozza a dokumentumot."
+    },
+    "aiGeneratingPdf": {
+      "title": "PDF készül",
+      "message": "A dokumentum PDF-je készül."
+    },
+    "aiDone": {
+      "title": "Kész",
+      "message": "A dokumentum feldolgozása befejeződött."
+    },
+    "aiFailed": {
+      "title": "Sikertelen",
+      "message": "A dokumentum feldolgozása sikertelen volt."
+    },
+    "aiRetrying": {
+      "title": "Újrapróbálás",
+      "message": "A rendszer újrapróbálja a feldolgozást."
+    },
+    "aiCancelled": {
+      "title": "Megszakítva",
+      "message": "A feldolgozás megszakítva."
+    }
+  },
+  "offline": {
+    "banner": "Nincs internetkapcsolat. A dokumentumok mentésre kerülnek és automatikusan szinkronizálódnak.",
+    "status": {
+      "pending": "Várakozik szinkronra",
+      "in_flight": "Szinkronizálás…",
+      "failed": "Sikertelen",
+      "done": "Szinkronizálva"
+    }
+  },
+  "pwa": {
+    "updateAvailable": "Új verzió érhető el. Frissítés.",
+    "installPrompt": "Telepítse a Vallordocs alkalmazást a gyorsabb hozzáférésért."
   }
 }
