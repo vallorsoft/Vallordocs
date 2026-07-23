@@ -53,5 +53,10 @@ ENV NODE_ENV=production \
 
 EXPOSE 8080
 
-# Run Prisma migrations then start the server.
-CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
+# Start the server. Run pending migrations first, but never let a migration
+# problem (e.g. DATABASE_URL not yet configured, or the database being briefly
+# unreachable) stop the machine from booting — otherwise the health check never
+# passes and Fly.io reports "no machine created". The server itself does not
+# require the database at boot; DB-backed features come online once the
+# DATABASE_URL secret is set.
+CMD ["sh", "-c", "npx prisma migrate deploy || echo 'WARN: prisma migrate deploy skipped (DATABASE_URL unset or database unreachable) - starting server anyway'; node server.js"]
