@@ -1,0 +1,44 @@
+{
+  "common": {
+    "appName": "Vallordocs",
+    "tagline": "Intelligens dokumentum-helyreállítás fuvarozó vállalatoknak",
+    "loading": "Betöltés…",
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "delete": "Törlés",
+    "search": "Keresés",
+    "retry": "Újrapróbálás"
+  },
+  "nav": {
+    "dashboard": "Irányítópult",
+    "trips": "Fuvarok",
+    "documents": "Dokumentumok",
+    "drivers": "Sofőrök",
+    "users": "Felhasználók",
+    "tenant": "Cég",
+    "aiQueue": "AI sor",
+    "audit": "Audit",
+    "reports": "Riportok",
+    "settings": "Beállítások",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "Vallordocs",
+    "subtitle": "Fotózott fuvardokumentumaiból professzionális, szkennelt minőségű PDF-eket készít.",
+    "status": "A rendszer alapjai készen állnak."
+  },
+  "documentStatus": {
+    "uploaded": "Feltöltve",
+    "processing": "Feldolgozás alatt",
+    "generatingPdf": "PDF készül",
+    "done": "Kész",
+    "failed": "Sikertelen",
+    "retrying": "Újrapróbálás",
+    "cancelled": "Megszakítva"
+  },
+  "errors": {
+    "generic": "Váratlan hiba történt. Kérjük, próbálja újra később.",
+    "unauthorized": "Nincs jogosultsága ehhez a művelethez.",
+    "notFound": "A keresett elem nem található."
+  }
+}

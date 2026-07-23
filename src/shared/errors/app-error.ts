@@ -1,0 +1,77 @@
+/**
+ * Base application error hierarchy (PRD 2./5. fejezet – Hibakezelés).
+ *
+ * User-facing responses must only ever expose the safe `code` and a translated
+ * message key. Detailed context stays server-side for logging and never leaks
+ * to the client (no stack traces, SQL, file paths, secrets).
+ */
+export type AppErrorCode =
+  | 'UNAUTHORIZED'
+  | 'FORBIDDEN'
+  | 'NOT_FOUND'
+  | 'VALIDATION'
+  | 'CONFLICT'
+  | 'RATE_LIMITED'
+  | 'INTERNAL';
+
+export class AppError extends Error {
+  public readonly code: AppErrorCode;
+  public readonly httpStatus: number;
+  /** Translation key resolved by the UI; never a raw string. */
+  public readonly messageKey: string;
+  /** Server-only diagnostic context. Never serialised to clients. */
+  public readonly context?: Record<string, unknown>;
+
+  constructor(params: {
+    code: AppErrorCode;
+    httpStatus: number;
+    messageKey: string;
+    message?: string;
+    context?: Record<string, unknown>;
+  }) {
+    super(params.message ?? params.messageKey);
+    this.name = new.target.name;
+    this.code = params.code;
+    this.httpStatus = params.httpStatus;
+    this.messageKey = params.messageKey;
+    this.context = params.context;
+  }
+
+  /** The only shape that may be sent to a client. */
+  toPublicJSON(): { code: AppErrorCode; messageKey: string } {
+    return { code: this.code, messageKey: this.messageKey };
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(context?: Record<string, unknown>) {
+    super({
+      code: 'UNAUTHORIZED',
+      httpStatus: 401,
+      messageKey: 'errors.unauthorized',
+      context,
+    });
+  }
+}
+
+export class ForbiddenError extends AppError {
+  constructor(context?: Record<string, unknown>) {
+    super({
+      code: 'FORBIDDEN',
+      httpStatus: 403,
+      messageKey: 'errors.unauthorized',
+      context,
+    });
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(context?: Record<string, unknown>) {
+    super({
+      code: 'NOT_FOUND',
+      httpStatus: 404,
+      messageKey: 'errors.notFound',
+      context,
+    });
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "common": {
+    "appName": "Vallordocs",
+    "tagline": "Restaurare inteligentă a documentelor pentru companii de transport",
+    "loading": "Se încarcă…",
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "delete": "Șterge",
+    "search": "Căutare",
+    "retry": "Reîncearcă"
+  },
+  "nav": {
+    "dashboard": "Tablou de bord",
+    "trips": "Transporturi",
+    "documents": "Documente",
+    "drivers": "Șoferi",
+    "users": "Utilizatori",
+    "tenant": "Companie",
+    "aiQueue": "Coadă AI",
+    "audit": "Audit",
+    "reports": "Rapoarte",
+    "settings": "Setări",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "Vallordocs",
+    "subtitle": "Transformă fotografiile documentelor de transport în PDF-uri de calitate profesională, scanată.",
+    "status": "Fundația sistemului este pregătită."
+  },
+  "documentStatus": {
+    "uploaded": "Încărcat",
+    "processing": "În procesare",
+    "generatingPdf": "Se generează PDF",
+    "done": "Finalizat",
+    "failed": "Eșuat",
+    "retrying": "Se reîncearcă",
+    "cancelled": "Anulat"
+  },
+  "errors": {
+    "generic": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou mai târziu.",
+    "unauthorized": "Nu aveți permisiunea pentru această acțiune.",
+    "notFound": "Elementul căutat nu a fost găsit."
+  }
+}

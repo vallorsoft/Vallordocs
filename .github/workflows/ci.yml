@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, "feature/**", "bugfix/**", "hotfix/**"]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  ci:
+    name: Lint · Type-check · Test · Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vallordocs
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit & integration tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vallordocs
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: ci-test-secret-that-is-at-least-32-chars
+          AI_PROVIDER: gemini
+          GEMINI_API_KEY: ci-test-key
+          STORAGE_PROVIDER: fly
+          FLY_STORAGE_PATH: /tmp/storage
+
+      - name: Build
+        run: npm run build
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vallordocs
