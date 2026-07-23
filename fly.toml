@@ -1,0 +1,76 @@
+# Vallordocs – Fly.io deployment configuration (PRD 6. fejezet – Deployment)
+#
+# App: vallordocs
+# Region: fra (Frankfurt, EU)
+# URL: https://vallordocs.fly.dev
+#
+# Deploy command:
+#   fly deploy
+#
+# First-time setup:
+#   fly launch --no-deploy   (links the app, generates secrets form)
+#   fly secrets set DATABASE_URL="..." REDIS_URL="..." JWT_SECRET="..." ...
+#   fly volumes create vallordocs_data --region fra --size 10
+#   fly deploy
+
+app = "vallordocs"
+primary_region = "fra"
+
+# -- Build ------------------------------------------------------------------
+[build]
+  dockerfile = "Dockerfile"
+
+# -- Environment (non-secret) -----------------------------------------------
+# Secrets (DATABASE_URL, JWT_SECRET, etc.) are set via `fly secrets set`.
+[env]
+  NODE_ENV         = "production"
+  PORT             = "8080"
+  DEFAULT_LANGUAGE = "hu"
+  DEFAULT_TIMEZONE = "Europe/Budapest"
+  LOG_LEVEL        = "info"
+  APP_URL          = "https://vallordocs.fly.dev"
+
+# -- HTTP service ------------------------------------------------------------
+[[services]]
+  internal_port = 8080
+  protocol      = "tcp"
+  auto_stop_machines  = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+    force_https = true
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [services.concurrency]
+    type       = "connections"
+    hard_limit = 500
+    soft_limit = 400
+
+  [[services.http_checks]]
+    interval    = 30000
+    timeout     = 5000
+    grace_period = "15s"
+    method      = "GET"
+    path        = "/api/health"
+
+# -- Persistent volume for Fly.io storage provider --------------------------
+# Used when STORAGE_PROVIDER=fly (default first-version storage).
+# Switching to Cloudflare R2 requires only setting env vars; no code change.
+[[mounts]]
+  source      = "vallordocs_data"
+  destination = "/data"
+
+# -- Machines / VM sizing ----------------------------------------------------
+[machines]
+  memory = "512mb"
+
+# -- Metrics (PRD 5./6. fejezet – Monitoring, Prometheus) -------------------
+[metrics]
+  port = 9091
+  path = "/metrics"

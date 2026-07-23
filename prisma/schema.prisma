@@ -1,0 +1,540 @@
+// Vallordocs data model (PRD 7. fejezet – Adatbázis tervezés).
+//
+// Principles enforced here:
+//   * Every primary key is a UUID (no auto-increment).
+//   * Almost every table carries the shared audit columns and soft-delete
+//     columns; data is never physically deleted by the application.
+//   * Every tenant-scoped table has a `tenantId` and an index on it so that
+//     queries can always filter by tenant (True Multi-Tenant isolation).
+//   * Foreign keys model relationships; deletion is soft, never cascade.
+//
+// This schema is intentionally the foundation. Later milestones extend it with
+// migrations rather than rewrites (OCR fields, eCMR, workflow, billing, …).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Language {
+  hu
+  ro
+}
+
+enum Timezone {
+  Europe_Budapest @map("Europe/Budapest")
+  Europe_Bucharest @map("Europe/Bucharest")
+}
+
+enum UserStatus {
+  active
+  invited
+  suspended
+  disabled
+}
+
+enum DriverStatus {
+  active
+  inactive
+  suspended
+}
+
+enum TripStatus {
+  planned
+  in_progress
+  completed
+  cancelled
+}
+
+enum RoleName {
+  platform_owner
+  platform_admin
+  tenant_admin
+  dispatcher
+  office_user
+  driver
+  read_only
+}
+
+enum DocumentType {
+  cmr
+  invoice
+  pod
+  delivery_note
+  adr
+  weight_ticket
+  fuel_receipt
+  toll_receipt
+  customs
+  other
+}
+
+enum DocumentStatus {
+  draft
+  uploaded
+  processing
+  ready
+  failed
+}
+
+enum AiJobStatus {
+  queued
+  processing
+  generating_pdf
+  done
+  failed
+  retrying
+  cancelled
+}
+
+enum AiProvider {
+  gemini
+  openai
+  claude
+  vertexai
+}
+
+enum StorageProvider {
+  fly
+  r2
+  s3
+  azure
+  gcs
+}
+
+enum NotificationType {
+  info
+  success
+  warning
+  error
+}
+
+// ---------------------------------------------------------------------------
+// Tenancy & identity
+// ---------------------------------------------------------------------------
+
+model Tenant {
+  id               String    @id @default(uuid()) @db.Uuid
+  companyName      String
+  taxNumber        String?
+  country          String?
+  city             String?
+  address          String?
+  logoUrl          String?
+  defaultLanguage  Language  @default(hu)
+  defaultTimezone  Timezone  @default(Europe_Budapest)
+  aiEnabled        Boolean   @default(true)
+  storageLimitMb   Int?
+  documentLimit    Int?
+  isActive         Boolean   @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String?   @db.Uuid
+  updatedBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+  version   Int       @default(1)
+
+  users         User[]
+  drivers       Driver[]
+  trips         Trip[]
+  documents     Document[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  loginHistory  LoginHistory[]
+  storageFiles  StorageFile[]
+  settings      Setting[]
+  aiJobs        AiJob[]
+
+  @@index([isActive])
+  @@map("tenants")
+}
+
+model User {
+  id           String     @id @default(uuid()) @db.Uuid
+  tenantId     String?    @db.Uuid
+  name         String
+  email        String
+  phone        String?
+  passwordHash String?
+  avatarUrl    String?
+  language     Language   @default(hu)
+  timezone     Timezone   @default(Europe_Budapest)
+  status       UserStatus @default(invited)
+  lastLoginAt  DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String?   @db.Uuid
+  updatedBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+  version   Int       @default(1)
+
+  tenant        Tenant?        @relation(fields: [tenantId], references: [id])
+  userRoles     UserRole[]
+  notifications Notification[]
+  refreshTokens RefreshToken[]
+  loginHistory  LoginHistory[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+  @@index([status])
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        RoleName @unique
+  description String?
+  isSystem    Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String  @id @default(uuid()) @db.Uuid
+  // Dotted permission key, e.g. document.read, ai.execute (PRD 7. fejezet).
+  key         String  @unique
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  roleId String @db.Uuid
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String @id @default(uuid()) @db.Uuid
+  roleId       String @db.Uuid
+  permissionId String @db.Uuid
+
+  createdAt DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+// ---------------------------------------------------------------------------
+// Freight domain
+// ---------------------------------------------------------------------------
+
+model Driver {
+  id             String       @id @default(uuid()) @db.Uuid
+  tenantId       String       @db.Uuid
+  name           String
+  driverCode     String
+  phone          String?
+  email          String?
+  licenseNumber  String?
+  adrCertified   Boolean      @default(false)
+  status         DriverStatus @default(active)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String?   @db.Uuid
+  updatedBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+  version   Int       @default(1)
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  trips     Trip[]
+  documents Document[]
+
+  @@unique([tenantId, driverCode])
+  @@index([tenantId])
+  @@index([status])
+  @@map("drivers")
+}
+
+model Trip {
+  id            String     @id @default(uuid()) @db.Uuid
+  tenantId      String     @db.Uuid
+  tripNumber    String
+  orderNumber   String?
+  originPlace   String?
+  destination   String?
+  departureAt   DateTime?
+  arrivalAt     DateTime?
+  status        TripStatus @default(planned)
+  driverId      String?    @db.Uuid
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String?   @db.Uuid
+  updatedBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+  version   Int       @default(1)
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id])
+  driver    Driver?    @relation(fields: [driverId], references: [id])
+  documents Document[]
+
+  @@unique([tenantId, tripNumber])
+  @@index([tenantId])
+  @@index([driverId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("trips")
+}
+
+model Document {
+  id             String         @id @default(uuid()) @db.Uuid
+  tenantId       String         @db.Uuid
+  tripId         String?        @db.Uuid
+  driverId       String?        @db.Uuid
+  documentType   DocumentType
+  status         DocumentStatus @default(draft)
+  aiStatus       AiJobStatus    @default(queued)
+  currentVersion Int            @default(1)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String?   @db.Uuid
+  updatedBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+  version   Int       @default(1)
+
+  tenant   Tenant            @relation(fields: [tenantId], references: [id])
+  trip     Trip?             @relation(fields: [tripId], references: [id])
+  driver   Driver?           @relation(fields: [driverId], references: [id])
+  versions DocumentVersion[]
+  aiJobs   AiJob[]
+
+  @@index([tenantId])
+  @@index([tripId])
+  @@index([driverId])
+  @@index([documentType])
+  @@index([status])
+  @@index([createdAt])
+  @@map("documents")
+}
+
+model DocumentVersion {
+  id            String  @id @default(uuid()) @db.Uuid
+  tenantId      String  @db.Uuid
+  documentId    String  @db.Uuid
+  versionNumber Int
+  // What this version represents, e.g. original photo, AI-restored, PDF.
+  kind          String
+  storageFileId String? @db.Uuid
+
+  createdAt DateTime @default(now())
+  createdBy String?  @db.Uuid
+
+  document    Document     @relation(fields: [documentId], references: [id])
+  storageFile StorageFile? @relation(fields: [storageFileId], references: [id])
+
+  @@unique([documentId, versionNumber])
+  @@index([tenantId])
+  @@index([documentId])
+  @@map("document_versions")
+}
+
+model AiJob {
+  id             String      @id @default(uuid()) @db.Uuid
+  tenantId       String      @db.Uuid
+  documentId     String      @db.Uuid
+  status         AiJobStatus @default(queued)
+  provider       AiProvider  @default(gemini)
+  model          String?
+  promptVersion  String?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  durationMs     Int?
+  tokensUsed     Int?
+  errorMessage   String?
+  attempts       Int         @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@index([tenantId])
+  @@index([documentId])
+  @@index([status])
+  @@map("ai_jobs")
+}
+
+// ---------------------------------------------------------------------------
+// Storage
+// ---------------------------------------------------------------------------
+
+model StorageFile {
+  id        String          @id @default(uuid()) @db.Uuid
+  tenantId  String          @db.Uuid
+  provider  StorageProvider
+  bucket    String?
+  // Storage path is never a public URL (PRD 5. fejezet – Storage biztonság).
+  path      String
+  filename  String
+  mimeType  String
+  sizeBytes Int
+  checksum  String?
+
+  createdAt DateTime  @default(now())
+  createdBy String?   @db.Uuid
+  deletedAt DateTime?
+  deletedBy String?   @db.Uuid
+
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  documentVersions DocumentVersion[]
+
+  @@index([tenantId])
+  @@index([checksum])
+  @@map("storage_files")
+}
+
+// ---------------------------------------------------------------------------
+// Compliance, audit & session
+// ---------------------------------------------------------------------------
+
+// Append-only. Never updated or deleted by the application (PRD 5. fejezet).
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String?  @db.Uuid
+  userId    String?  @db.Uuid
+  ipAddress String?
+  browser   String?
+  os        String?
+  device    String?
+  action    String
+  entity    String?
+  entityId  String?  @db.Uuid
+  oldValue  Json?
+  newValue  Json?
+  success   Boolean  @default(true)
+  errorText String?
+  createdAt DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([action])
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model LoginHistory {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String?  @db.Uuid
+  userId    String?  @db.Uuid
+  ipAddress String?
+  browser   String?
+  os        String?
+  device    String?
+  success   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("login_history")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  device     String?
+  ipAddress  String?
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model Notification {
+  id       String           @id @default(uuid()) @db.Uuid
+  tenantId String           @db.Uuid
+  userId   String           @db.Uuid
+  title    String
+  message  String
+  type     NotificationType @default(info)
+  readAt   DateTime?
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([readAt])
+  @@map("notifications")
+}
+
+model Setting {
+  id       String @id @default(uuid()) @db.Uuid
+  tenantId String @db.Uuid
+  key      String
+  value    Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  updatedBy String?  @db.Uuid
+  version   Int      @default(1)
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, key])
+  @@index([tenantId])
+  @@map("settings")
+}
