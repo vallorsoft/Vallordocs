@@ -1,0 +1,47 @@
+# ============================================================
+# Docker build context excludes (PRD 6. fejezet – Docker)
+#
+# Keeps the build context small and – critically – prevents the
+# builder stage `COPY . .` from clobbering the Linux (musl) node_modules
+# installed by `npm ci` with host-platform (Windows/macOS) binaries.
+# Without this file a local `fly deploy` breaks at the "Build image"
+# step because Prisma/Next native binaries end up wrong-platform.
+# ============================================================
+
+# Dependencies – reinstalled inside the image via `npm ci`
+node_modules
+.pnp
+.pnp.js
+
+# Next.js build output – regenerated inside the image
+.next
+out
+
+# Version control / CI
+.git
+.gitignore
+.github
+.husky
+
+# Local environment & secrets – never bake into the image
+.env
+.env.*
+!.env.example
+
+# Test / coverage / local tooling
+coverage
+vitest.config.ts
+vitest.setup.ts
+
+# Editor / OS cruft
+.vscode
+.idea
+.DS_Store
+*.log
+npm-debug.log*
+
+# Docs & compose (not needed at build time)
+docker-compose.yml
+README.md
+PRD.md
+docs
