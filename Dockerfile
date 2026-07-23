@@ -58,10 +58,13 @@ ENV NODE_ENV=production \
 
 EXPOSE 8080
 
-# Start the server. Run pending migrations first, but never let a migration
-# problem (e.g. DATABASE_URL not yet configured, or the database being briefly
-# unreachable) stop the machine from booting — otherwise the health check never
-# passes and Fly.io reports "no machine created". The server itself does not
-# require the database at boot; DB-backed features come online once the
-# DATABASE_URL secret is set.
-CMD ["sh", "-c", "npx prisma migrate deploy || echo 'WARN: prisma migrate deploy skipped (DATABASE_URL unset or database unreachable) - starting server anyway'; node server.js"]
+# Start the server directly. Migrations are NOT run here: the runner stage
+# does not bundle the `prisma` CLI package (only the generated .prisma/@prisma
+# client), so `npx prisma migrate deploy` would try to fetch it from the
+# network on every boot. With fly.toml's 15s health-check grace period, that
+# network round-trip alone was enough to miss the health check and fail the
+# whole deploy - even though the app itself never needs the database to boot
+# (env validation and the Prisma client are not touched by any route at
+# startup). Run migrations out-of-band instead, e.g.:
+#   fly ssh console -C "npx --yes prisma@6.19.3 migrate deploy" -a vallordocs
+CMD ["node", "server.js"]
