@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Vallordocs">
+  <rect width="512" height="512" rx="96" fill="#0f172a"/>
+  <g fill="none" stroke="#38bdf8" stroke-width="20" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M176 112h120l72 72v216a24 24 0 0 1-24 24H176a24 24 0 0 1-24-24V136a24 24 0 0 1 24-24z" fill="#1e293b"/>
+    <path d="M296 112v72h72"/>
+    <path d="M196 256h120M196 300h120M196 344h80"/>
+  </g>
+  <rect x="152" y="380" width="208" height="20" rx="10" fill="#38bdf8" opacity="0.35"/>
+</svg>
