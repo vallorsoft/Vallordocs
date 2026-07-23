@@ -16,6 +16,19 @@ jobs:
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Create app if it does not exist
+        run: flyctl apps create vallordocs --org personal 2>/dev/null || true
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Create volume if it does not exist
+        run: |
+          if ! flyctl volumes list --app vallordocs 2>/dev/null | grep -q vallordocs_data; then
+            flyctl volumes create vallordocs_data --app vallordocs --region fra --size 10 --yes
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
       - name: Deploy
         run: flyctl deploy --remote-only
         env:
