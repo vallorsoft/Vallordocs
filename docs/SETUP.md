@@ -98,7 +98,20 @@ fly deploy
 
 ---
 
+## Környezeti változók (M2 + M3)
+
+Az `.env.example` fájl az összes szükséges változót tartalmazza. A legfontosabbak:
+
+| Változó            | Leírás                                                       |
+| ------------------ | ------------------------------------------------------------ |
+| `DATABASE_URL`     | Neon/PostgreSQL kapcsolati sztring                           |
+| `JWT_SECRET`       | Legalább 32 karakteres, véletlenszerű titok a JWT aláíráshoz |
+| `GEMINI_API_KEY`   | Google AI Studio API kulcs az AI-helyreállításhoz            |
+| `AI_PROVIDER`      | `gemini` (egyetlen implementált provider M3-ban)             |
+| `STORAGE_PROVIDER` | `fly` (Fly Volume) vagy jövőbeli: `r2`, `s3`, `azure`, `gcs` |
+| `FLY_STORAGE_PATH` | Könyvtár a Fly Volume tárolóhoz (pl. `/data/storage`)        |
+
 ## Következő mérföldkő
 
-A következő fejlesztési szakasz (Milestone 2) az autentikáció és a multi-tenant
-rendszer felépítése. A PRD szerint minden lépést jóváhagyás előz meg.
+A következő fejlesztési szakasz (Milestone 4) a felhasználói profil, sofőr-
+és fuvar-entitások, valamint az API route-ok implementálása.

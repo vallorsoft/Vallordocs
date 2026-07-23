@@ -19,20 +19,35 @@ implementation.
 
 ## Module map
 
-| Module          | Responsibility                                               |
-| --------------- | ------------------------------------------------------------ |
-| `auth`          | Authentication, sessions, RBAC enforcement                   |
-| `tenants`       | Tenant lifecycle, settings, isolation                        |
-| `users`         | User profiles, roles, device management                      |
-| `drivers`       | Driver entities                                              |
-| `trips`         | Trips / freight orders                                       |
-| `documents`     | Documents, versions, multi-page handling                     |
-| `ai`            | AI provider abstraction & document restoration orchestration |
-| `storage`       | Pluggable storage provider (Fly Volume, R2, …)               |
-| `audit`         | Append-only audit logging                                    |
-| `notifications` | In-app notifications (push-ready)                            |
-| `settings`      | Tenant-level configuration                                   |
-| `dashboard`     | Aggregated statistics & widgets                              |
+| Module          | Milestone | Status         | Responsibility                                                                               |
+| --------------- | --------- | -------------- | -------------------------------------------------------------------------------------------- |
+| `auth`          | M2        | ✅ Implemented | Password hashing (Argon2id), JWT access+refresh tokens, RBAC (7 roles, 13 permission keys)   |
+| `tenants`       | M2        | ✅ Implemented | `TenantContext`, `tenantScope()`, `assertSameTenant()` for tenant isolation and IDOR defence |
+| `storage`       | M3        | ✅ Implemented | `StorageProvider` interface, safe key paths, Fly Volume impl, R2/S3/Azure/GCS stubs          |
+| `ai`            | M3        | ✅ Implemented | `AiProvider` interface, 11-step restoration pipeline, authenticity guardrails, Gemini impl   |
+| `documents`     | M3        | ✅ Implemented | Magic-number detection, file security validation, photo quality checks, A4 PDF generation    |
+| `users`         | M4        | 🔲 Boundary    | User profiles, roles, device management                                                      |
+| `drivers`       | M4        | 🔲 Boundary    | Driver entities                                                                              |
+| `trips`         | M4        | 🔲 Boundary    | Trips / freight orders                                                                       |
+| `audit`         | M5        | 🔲 Boundary    | Append-only audit logging                                                                    |
+| `notifications` | M5        | 🔲 Boundary    | In-app notifications (push-ready)                                                            |
+| `settings`      | M5        | 🔲 Boundary    | Tenant-level configuration                                                                   |
+| `dashboard`     | M5        | 🔲 Boundary    | Aggregated statistics & widgets                                                              |
 
-Each module is populated in its own milestone. This foundation milestone only
-establishes the boundaries.
+## M2 — Auth & Multi-Tenant
+
+- **`auth/password.ts`** — Argon2id (OWASP params: 19 MiB, 2 iterations), strength policy (12+ chars, lower/upper/digit/special)
+- **`auth/tokens.ts`** — HS256 JWTs; access token 15 min / refresh token 30 days; audience-separated; refresh token stored as SHA-256 hash only
+- **`auth/rbac.ts`** — `ROLE_PERMISSIONS` map for all 7 roles; `requirePermission` / `can` / `canAll` / `canAny` helpers
+- **`tenants/tenant-context.ts`** — `tenantScope()` adds `{tenantId, deletedAt:null}` to every query; `assertSameTenant()` prevents IDOR; platform_owner bypasses tenant filter
+
+## M3 — AI, Storage, Documents
+
+- **`storage/`** — Key format `{tenantId}/documents/{tripId}/{documentId}/{variant}/{uuid}.{ext}`; path traversal prevention in Fly Volume; cached singleton via `getStorageProvider()`
+- **`ai/pipeline.ts`** — 11 ordered steps: `perspective_correction → edge_detection → auto_crop → shadow_removal → background_removal → geometry_correction → contrast_optimization → white_balance → denoise → sharpen → a4_fit`
+- **`ai/guardrails.ts`** — System prompt forbids 8 content-altering modifications (inventing text, correcting numbers, changing dates, …); allows only 11 visual adjustments
+- **`ai/gemini-provider.ts`** — Injected `GeminiTransport` for full unit-testability; `gemini-2.0-flash` default model
+- **`documents/magic-numbers.ts`** — Detects JPEG / PNG / PDF / HEIC / WEBP from actual bytes, never from extension or declared MIME
+- **`documents/file-security.ts`** — 9 issue types including double-extension spoofing, MIME mismatch, extension–content mismatch
+- **`documents/quality.ts`** — Numeric thresholds (1000 px min, sharpness ≥ 0.35, brightness 0.2–0.9); merges device-detected flags, de-duplicates
+- **`documents/pdf.ts`** — Multi-page A4 PDF via `pdf-lib`; 300 DPI target; aspect-ratio preserving with centred placement
