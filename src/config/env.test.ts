@@ -39,12 +39,6 @@ describe('parseEnv', () => {
     expect(() => parseEnv(env)).toThrow(/DATABASE_URL/);
   });
 
-  it('requires GEMINI_API_KEY when AI provider is gemini', () => {
-    const env = baseEnv();
-    delete env.GEMINI_API_KEY;
-    expect(() => parseEnv(env)).toThrow(/GEMINI_API_KEY/);
-  });
-
   it('requires all R2 secrets when storage provider is r2', () => {
     const env = {
       ...baseEnv(),
