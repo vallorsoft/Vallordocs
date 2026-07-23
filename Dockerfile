@@ -22,6 +22,11 @@ COPY . .
 # Generate the Prisma client (required at build time for type-safety).
 RUN npx prisma generate
 
+# The repo does not track a public/ directory (no static assets yet), but
+# Next.js standalone output does not bundle it - the runner stage below always
+# copies it explicitly. Ensure it exists so that COPY never fails.
+RUN mkdir -p ./public
+
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
