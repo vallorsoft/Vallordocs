@@ -33,7 +33,8 @@ const baseSchema = z.object({
   DATABASE_URL: z.string().url(),
 
   // Queue / background processing (PRD 3. fejezet – Háttérfeldolgozás).
-  REDIS_URL: z.string().url(),
+  // Optional until the background jobs module comes online.
+  REDIS_URL: z.string().url().optional(),
 
   // Authentication secrets (PRD 2./5. fejezet – Munkamenet, Secret kezelés).
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
@@ -64,13 +65,8 @@ const baseSchema = z.object({
  * provider that is actually selected.
  */
 const envSchema = baseSchema.superRefine((env, ctx) => {
-  if (env.AI_PROVIDER === 'gemini' && !env.GEMINI_API_KEY) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ['GEMINI_API_KEY'],
-      message: 'GEMINI_API_KEY is required when AI_PROVIDER=gemini',
-    });
-  }
+  // GEMINI_API_KEY is only required once the AI module is wired up;
+  // for now it is not connected, so we don't block boot on it.
 
   if (env.STORAGE_PROVIDER === 'fly' && !env.FLY_STORAGE_PATH) {
     ctx.addIssue({
