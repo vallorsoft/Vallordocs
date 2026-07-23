@@ -14,8 +14,28 @@ jobs:
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
+      # Preflight: fail early with a clear message if the token is missing or
+      # unauthorized, instead of dying with a bare "Error: unauthorized" during
+      # deploy (which happens *before* any build, so there is no build log).
+      - name: Verify Fly.io credentials
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "::error::FLY_API_TOKEN secret is not set. Add it in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "Authenticated as:"
+          flyctl auth whoami
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
       - name: Create app if it does not exist
-        run: flyctl apps create vallordocs --org personal 2>/dev/null || true
+        run: |
+          if flyctl status --app vallordocs >/dev/null 2>&1; then
+            echo "App 'vallordocs' already exists."
+          else
+            echo "App 'vallordocs' not found – creating it."
+            flyctl apps create vallordocs --org personal
+          fi
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
