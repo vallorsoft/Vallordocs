@@ -39,6 +39,34 @@
   "errors": {
     "generic": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou mai târziu.",
     "unauthorized": "Nu aveți permisiunea pentru această acțiune.",
-    "notFound": "Elementul căutat nu a fost găsit."
+    "notFound": "Elementul căutat nu a fost găsit.",
+    "forbidden": "Acces refuzat.",
+    "conflict": "Resursa există deja sau a apărut un conflict.",
+    "rateLimited": "Prea multe cereri. Vă rugăm să așteptați puțin.",
+    "validation": "Date invalide.",
+    "weakPassword": "Parola nu îndeplinește cerințele de securitate. Trebuie să aibă cel puțin 12 caractere și să conțină litere mici, mari, cifre și caractere speciale."
+  },
+  "auth": {
+    "signIn": "Autentificare",
+    "signOut": "Deconectare",
+    "email": "Adresă de e-mail",
+    "password": "Parolă",
+    "invalidCredentials": "Adresă de e-mail sau parolă incorectă.",
+    "sessionExpired": "Sesiunea a expirat. Vă rugăm să vă autentificați din nou.",
+    "tokenRefreshed": "Sesiunea a fost reînnoită."
+  },
+  "upload": {
+    "selectFile": "Selectați fișierul",
+    "uploading": "Se încarcă…",
+    "success": "Fișierul a fost încărcat cu succes.",
+    "issue_empty": "Fișierul este gol.",
+    "issue_too_large": "Dimensiunea fișierului depășește limita permisă.",
+    "issue_missing_extension": "Numele fișierului nu are extensie.",
+    "issue_double_extension": "Numele fișierului conține o extensie dublă suspectă.",
+    "issue_disallowed_extension": "Această extensie de fișier nu este permisă.",
+    "issue_unknown_content": "Tipul fișierului nu poate fi identificat.",
+    "issue_disallowed_content": "Acest tip de fișier nu poate fi încărcat.",
+    "issue_mime_mismatch": "Tipul MIME declarat nu corespunde conținutului fișierului.",
+    "issue_extension_content_mismatch": "Extensia nu corespunde conținutului real al fișierului."
   }
 }

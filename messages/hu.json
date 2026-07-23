@@ -39,6 +39,34 @@
   "errors": {
     "generic": "Váratlan hiba történt. Kérjük, próbálja újra később.",
     "unauthorized": "Nincs jogosultsága ehhez a művelethez.",
-    "notFound": "A keresett elem nem található."
+    "notFound": "A keresett elem nem található.",
+    "forbidden": "Hozzáférés megtagadva.",
+    "conflict": "Az erőforrás már létezik vagy ütközés lépett fel.",
+    "rateLimited": "Túl sok kérés. Kérjük, várjon egy kicsit.",
+    "validation": "Érvénytelen adatok.",
+    "weakPassword": "A jelszó nem felel meg a biztonsági követelményeknek. Legyen legalább 12 karakter hosszú, és tartalmazzon kis- és nagybetűt, számot és speciális karaktert."
+  },
+  "auth": {
+    "signIn": "Bejelentkezés",
+    "signOut": "Kijelentkezés",
+    "email": "E-mail cím",
+    "password": "Jelszó",
+    "invalidCredentials": "Helytelen e-mail cím vagy jelszó.",
+    "sessionExpired": "A munkamenet lejárt. Kérjük, jelentkezzen be újra.",
+    "tokenRefreshed": "A munkamenet megújításra került."
+  },
+  "upload": {
+    "selectFile": "Fájl kiválasztása",
+    "uploading": "Feltöltés folyamatban…",
+    "success": "A fájl sikeresen feltöltve.",
+    "issue_empty": "A fájl üres.",
+    "issue_too_large": "A fájl mérete meghaladja a megengedett határt.",
+    "issue_missing_extension": "A fájlnévből hiányzik a kiterjesztés.",
+    "issue_double_extension": "A fájlnév gyanús dupla kiterjesztést tartalmaz.",
+    "issue_disallowed_extension": "Ez a fájlkiterjesztés nem engedélyezett.",
+    "issue_unknown_content": "A fájl típusa nem azonosítható.",
+    "issue_disallowed_content": "Ez a fájltípus nem tölthető fel.",
+    "issue_mime_mismatch": "A deklarált MIME-típus nem egyezik a fájl tartalmával.",
+    "issue_extension_content_mismatch": "A kiterjesztés nem egyezik a fájl tényleges tartalmával."
   }
 }

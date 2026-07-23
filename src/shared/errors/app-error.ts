@@ -75,3 +75,66 @@ export class NotFoundError extends AppError {
     });
   }
 }
+
+export class ValidationError extends AppError {
+  constructor(params?: {
+    messageKey?: string;
+    message?: string;
+    context?: Record<string, unknown>;
+  }) {
+    super({
+      code: 'VALIDATION',
+      httpStatus: 422,
+      messageKey: params?.messageKey ?? 'errors.validation',
+      message: params?.message,
+      context: params?.context,
+    });
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(params?: {
+    messageKey?: string;
+    message?: string;
+    context?: Record<string, unknown>;
+  }) {
+    super({
+      code: 'CONFLICT',
+      httpStatus: 409,
+      messageKey: params?.messageKey ?? 'errors.conflict',
+      message: params?.message,
+      context: params?.context,
+    });
+  }
+}
+
+export class RateLimitedError extends AppError {
+  constructor(context?: Record<string, unknown>) {
+    super({
+      code: 'RATE_LIMITED',
+      httpStatus: 429,
+      messageKey: 'errors.rateLimited',
+      context,
+    });
+  }
+}
+
+/**
+ * Wraps an unexpected failure. The public payload only ever exposes the generic
+ * message key, so internal details (stack traces, SQL, paths, secrets) never
+ * leak to the client (PRD 5. fejezet – Hibakezelés).
+ */
+export class InternalError extends AppError {
+  constructor(params?: {
+    message?: string;
+    context?: Record<string, unknown>;
+  }) {
+    super({
+      code: 'INTERNAL',
+      httpStatus: 500,
+      messageKey: 'errors.generic',
+      message: params?.message,
+      context: params?.context,
+    });
+  }
+}
