@@ -15,6 +15,7 @@ Ne egyszerűsítsd a specifikációt.
 Ha egy követelmény nem egyértelmű, kérdezz.
 
 Minden új funkciónál:
+
 1. Elemezd a jelenlegi architektúrát.
 2. Illeszkedj a meglévő kódhoz.
 3. Kövesd a dokumentumban leírt szabályokat.
@@ -22,7 +23,6 @@ Minden új funkciónál:
 5. Írj teszteket.
 6. Frissítsd a dokumentációt.
 
-   
 # 1. FEJEZET – PROJEKT CÉLJA, KÖVETELMÉNYEK, TECHNOLÓGIAI STACK ÉS ARCHITEKTÚRA
 
 # SZEREP
@@ -2462,7 +2462,7 @@ A rendszer:
 - Megfeleljen a GDPR, eIDAS és releváns romániai/EU előírásoknak.
 - Production-ready minőségű, jól dokumentált és hosszú távon bővíthető legyen.
 
-Minden fejlesztési döntésnél a biztonság, a teljesítmény, az egyszerűség és a karbantarthatóság élvezzen elsőbbséget. 
+Minden fejlesztési döntésnél a biztonság, a teljesítmény, az egyszerűség és a karbantarthatóság élvezzen elsőbbséget.
 
 # 7. FEJEZET – ADATBÁZIS TERVEZÉS, PRISMA MODELL, KAPCSOLATOK ÉS INDEXELÉS
 
