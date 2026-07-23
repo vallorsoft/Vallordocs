@@ -12,7 +12,8 @@
 // migrations rather than rewrites (OCR fields, eCMR, workflow, billing, …).
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
