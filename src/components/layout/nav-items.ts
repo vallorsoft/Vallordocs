@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Settings,
   ShieldCheck,
+  ShieldAlert,
   Truck,
   User,
   UserCog,
@@ -96,5 +97,13 @@ export const ADMIN_NAV: NavItem[] = [
     labelKey: 'nav.profile',
     icon: User,
     permission: null,
+  },
+  // Super-admin console — a distinct, platform-level menu entry visible only to
+  // holders of `platform.manage` (the platform_owner / platform_admin roles).
+  {
+    href: '/superadmin',
+    labelKey: 'nav.superadmin',
+    icon: ShieldAlert,
+    permission: PERMISSIONS.PLATFORM_MANAGE,
   },
 ];
