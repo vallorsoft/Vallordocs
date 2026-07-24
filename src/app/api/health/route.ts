@@ -4,15 +4,15 @@ import {
   type HealthProbe,
   type HealthReport,
 } from '@/modules/monitoring';
+import { prisma } from '@/lib/prisma';
 
 /**
  * Liveness / readiness endpoint (PRD 5. fejezet – Health Check).
  *
- * The endpoint composes named probes through {@link runHealthChecks}. In this
- * milestone the dependency probes (Database, Storage, …) are lightweight
- * placeholders that always report `ok` — the point here is the composable,
- * dependency-injected structure, not live connections that could fail the
- * build. Real probes replace these placeholders as those modules come online.
+ * The endpoint composes named probes through {@link runHealthChecks}. The
+ * database probe issues a trivial `SELECT 1`; a failure or timeout folds into a
+ * `degraded`/`down` overall status without leaking the underlying error text.
+ * Storage remains a lightweight placeholder until its live probe lands.
  */
 export const dynamic = 'force-dynamic';
 
@@ -21,9 +21,18 @@ function okProbe(name: string): HealthProbe {
   return { name, check: () => Promise.resolve({ status: 'ok' as const }) };
 }
 
+/** Real database liveness probe: a trivial round-trip to Postgres. */
+const databaseProbe: HealthProbe = {
+  name: 'database',
+  check: async () => {
+    await prisma.$queryRaw`SELECT 1`;
+    return { status: 'ok' as const };
+  },
+};
+
 const PROBES: HealthProbe[] = [
   okProbe('app'),
-  okProbe('database'),
+  databaseProbe,
   okProbe('storage'),
 ];
 

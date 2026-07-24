@@ -17,11 +17,23 @@ A sofőr lefotózza a fuvardokumentumot mobilján. A rendszer automatikusan prof
 
 ## Dokumentáció
 
-| Dokumentum                                     | Tartalom                          |
-| ---------------------------------------------- | --------------------------------- |
-| [docs/SETUP.md](docs/SETUP.md)                 | Fejlesztői és deployment útmutató |
-| [PRD.md](PRD.md)                               | Teljes rendszerspecifikáció       |
-| [src/modules/README.md](src/modules/README.md) | Modul határok és szabályok        |
+| Dokumentum                                             | Tartalom                                  |
+| ------------------------------------------------------ | ----------------------------------------- |
+| [docs/SETUP.md](docs/SETUP.md)                         | Fejlesztői és deployment útmutató         |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)           | Rendszer- és modularchitektúra, diagramok |
+| [docs/DATABASE.md](docs/DATABASE.md)                   | Adatmodell és ER diagram                  |
+| [docs/API.md](docs/API.md)                             | REST API végpontok (v1)                   |
+| [docs/PERMISSIONS.md](docs/PERMISSIONS.md)             | Szerepkörök, jogosultságok, RBAC mátrix   |
+| [docs/AUTH.md](docs/AUTH.md)                           | Hitelesítés, JWT, munkamenet              |
+| [docs/AI.md](docs/AI.md)                               | AI helyreállítási folyamat és guardrailek |
+| [docs/STORAGE.md](docs/STORAGE.md)                     | Tárolási absztrakció és folyamat          |
+| [docs/DEPLOY.md](docs/DEPLOY.md)                       | Deploy (Fly.io), CI/CD, env változók      |
+| [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md)         | Health, metrikák, tracing, teljesítmény   |
+| [docs/BACKUP.md](docs/BACKUP.md)                       | Mentési stratégia                         |
+| [docs/DISASTER_RECOVERY.md](docs/DISASTER_RECOVERY.md) | Katasztrófa-helyreállítási terv           |
+| [scripts/backup/](scripts/backup/)                     | Mentő/visszaállító szkriptek              |
+| [PRD.md](PRD.md)                                       | Teljes rendszerspecifikáció               |
+| [src/modules/README.md](src/modules/README.md)         | Modul határok és szabályok                |
 
 ---
 
