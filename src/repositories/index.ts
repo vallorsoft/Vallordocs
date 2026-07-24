@@ -95,3 +95,11 @@ export {
   type DashboardRepository,
   type DashboardRows,
 } from './dashboardRepository';
+
+export {
+  superadminRepository,
+  createSuperadminRepository,
+  type SuperadminRepository,
+  type PlatformOverview,
+  type PlatformTenantRow,
+} from './superadminRepository';

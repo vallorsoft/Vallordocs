@@ -24,7 +24,26 @@
     "audit": "Audit",
     "reports": "Riportok",
     "settings": "Beállítások",
-    "profile": "Profil"
+    "profile": "Profil",
+    "superadmin": "Szuperadmin"
+  },
+  "superadmin": {
+    "subtitle": "Platform szintű áttekintés és cégek kezelése",
+    "empty": "Még nincs megjeleníthető platformadat.",
+    "tenants": "Cégek",
+    "activeTenants": "{count} aktív",
+    "users": "Felhasználók",
+    "documents": "Dokumentumok",
+    "drivers": "Sofőrök",
+    "trips": "Fuvarok",
+    "tenantsTitle": "Cégek a platformon",
+    "noTenants": "Még nincs egyetlen cég sem.",
+    "company": "Cég",
+    "country": "Ország",
+    "status": "Státusz",
+    "active": "Aktív",
+    "inactive": "Inaktív",
+    "created": "Létrehozva"
   },
   "home": {
     "title": "Vallordocs",

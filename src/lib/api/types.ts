@@ -127,6 +127,29 @@ export interface TenantSettingsDto {
   logRetentionDays: number;
 }
 
+export interface PlatformTenantDto {
+  id: string;
+  companyName: string;
+  country: string | null;
+  isActive: boolean;
+  createdAt: string;
+  userCount: number;
+  documentCount: number;
+  driverCount: number;
+}
+
+export interface PlatformOverviewDto {
+  totals: {
+    tenants: number;
+    activeTenants: number;
+    users: number;
+    documents: number;
+    drivers: number;
+    trips: number;
+  };
+  tenants: PlatformTenantDto[];
+}
+
 /** Response envelopes keyed by their single payload property. */
 export interface DocumentsResponse {
   documents: DocumentDto[];
@@ -154,4 +177,7 @@ export interface DashboardResponse {
 }
 export interface SettingsResponse {
   settings: TenantSettingsDto;
+}
+export interface SuperadminOverviewResponse {
+  overview: PlatformOverviewDto;
 }

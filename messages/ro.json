@@ -24,7 +24,26 @@
     "audit": "Audit",
     "reports": "Rapoarte",
     "settings": "Setări",
-    "profile": "Profil"
+    "profile": "Profil",
+    "superadmin": "Superadmin"
+  },
+  "superadmin": {
+    "subtitle": "Prezentare generală la nivel de platformă și gestionarea companiilor",
+    "empty": "Nu există încă date de platformă de afișat.",
+    "tenants": "Companii",
+    "activeTenants": "{count} active",
+    "users": "Utilizatori",
+    "documents": "Documente",
+    "drivers": "Șoferi",
+    "trips": "Transporturi",
+    "tenantsTitle": "Companii pe platformă",
+    "noTenants": "Nu există încă nicio companie.",
+    "company": "Companie",
+    "country": "Țară",
+    "status": "Status",
+    "active": "Activ",
+    "inactive": "Inactiv",
+    "created": "Creat"
   },
   "home": {
     "title": "Vallordocs",
