@@ -9,13 +9,12 @@
 //
 // Run with:  npm run db:seed   (or `npx prisma db seed`)
 //
-// The super-admin password is taken from SUPERADMIN_PASSWORD. When unset, a
-// strong random password is generated and printed once so the account is never
-// created with a weak, guessable secret.
+// The super-admin password is taken from SUPERADMIN_PASSWORD. When unset, the
+// built-in DEFAULT_SUPERADMIN_PASSWORD is used (printed to the console). It is
+// policy-compliant and meant to be rotated after the first login.
 
 import { PrismaClient } from '@prisma/client';
 import { hash } from '@node-rs/argon2';
-import { randomBytes, randomInt } from 'node:crypto';
 
 const prisma = new PrismaClient();
 
@@ -50,17 +49,11 @@ const TENANT_NAME = process.env.SEED_TENANT_NAME ?? 'Vallor';
 // The primary account is both a normal admin and a super-admin.
 const SUPERADMIN_ROLES = ['tenant_admin', 'platform_owner'];
 
-/** Builds a policy-compliant random password (>=12 chars, mixed classes). */
-function generatePassword() {
-  const pick = (set) => set[randomInt(set.length)];
-  const lower = 'abcdefghijkmnpqrstuvwxyz';
-  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const digit = '23456789';
-  const special = '!@#$%^&*-_';
-  const base = randomBytes(16).toString('base64url');
-  // Guarantee at least one character from each required class.
-  return `${pick(upper)}${pick(lower)}${pick(digit)}${pick(special)}${base}`;
-}
+// Default password for the primary super-admin, used when SUPERADMIN_PASSWORD is
+// not supplied. It satisfies the password policy (>=12 chars, lower/upper/digit/
+// special — see src/modules/auth/password.ts). Change it in production via the
+// SUPERADMIN_PASSWORD env var (or log in and rotate it once the account exists).
+const DEFAULT_SUPERADMIN_PASSWORD = 'Vallor!Admin2026#';
 
 async function seedRoles() {
   for (const [name, description] of SYSTEM_ROLES) {
@@ -86,8 +79,11 @@ async function seedTenant() {
 }
 
 async function seedSuperadmin(tenantId) {
-  const providedPassword = process.env.SUPERADMIN_PASSWORD;
-  const password = providedPassword ?? generatePassword();
+  const providedPassword = process.env.SUPERADMIN_PASSWORD?.trim();
+  const password =
+    providedPassword && providedPassword.length > 0
+      ? providedPassword
+      : DEFAULT_SUPERADMIN_PASSWORD;
   const passwordHash = await hash(password, ARGON2_OPTIONS);
 
   const roles = await prisma.role.findMany({
@@ -110,9 +106,7 @@ async function seedSuperadmin(tenantId) {
         name: SUPERADMIN_NAME,
         tenantId,
         status: 'active',
-        // Only overwrite the password when one was explicitly supplied, so
-        // re-seeding does not silently rotate an operator's chosen secret.
-        ...(providedPassword ? { passwordHash } : {}),
+        passwordHash,
         userRoles: { create: roles.map((r) => ({ roleId: r.id })) },
       },
       include: { userRoles: { include: { role: true } } },
@@ -136,15 +130,12 @@ async function seedSuperadmin(tenantId) {
   const roleNames = user.userRoles.map((ur) => ur.role.name).join(', ');
   console.log(`  roles: ${roleNames}`);
 
-  if (!existing || providedPassword) {
-    if (providedPassword) {
-      console.log('  password: (from SUPERADMIN_PASSWORD)');
-    } else {
-      console.log(`  generated password: ${password}`);
-      console.log('  ⚠ store this now — it will not be shown again.');
-    }
+  if (providedPassword) {
+    console.log('  password: (from SUPERADMIN_PASSWORD)');
   } else {
-    console.log('  password: unchanged (set SUPERADMIN_PASSWORD to rotate)');
+    console.log(
+      `  password: ${password}  (default — change after first login)`,
+    );
   }
 }
 
