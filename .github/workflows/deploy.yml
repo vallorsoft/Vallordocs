@@ -3,6 +3,10 @@ name: Deploy to Fly.io
 on:
   push:
     branches: [main]
+  # Allow a manual redeploy from the Actions tab (GitHub UI, incl. mobile).
+  # Useful to restart the app so it reloads secrets/env set after the last
+  # deploy — e.g. DATABASE_URL, JWT_SECRET, FLY_STORAGE_PATH.
+  workflow_dispatch:
 
 jobs:
   deploy:
