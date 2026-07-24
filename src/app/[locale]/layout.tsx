@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { RegisterServiceWorker } from '@/components/pwa/register-sw';
+import { SessionProvider } from '@/components/session-provider';
+import { ToastProvider } from '@/components/ui/toast';
+import { themeInitScript } from '@/components/theme-toggle';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -47,10 +50,22 @@ export default async function LocaleLayout({
   // Enable static rendering for this locale.
   setRequestLocale(locale);
 
+  // Pass messages explicitly so translations resolve during static rendering in
+  // both Server and Client Components (next-intl static-rendering guidance).
+  const messages = await getMessages();
+
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* No-flash theme application before first paint (PRD 4. – Színvilág). */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-screen antialiased">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <SessionProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </SessionProvider>
+        </NextIntlClientProvider>
         <RegisterServiceWorker />
       </body>
     </html>

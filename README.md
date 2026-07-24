@@ -23,6 +23,7 @@ A sofőr lefotózza a fuvardokumentumot mobilján. A rendszer automatikusan prof
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)           | Rendszer- és modularchitektúra, diagramok |
 | [docs/DATABASE.md](docs/DATABASE.md)                   | Adatmodell és ER diagram                  |
 | [docs/API.md](docs/API.md)                             | REST API végpontok (v1)                   |
+| [docs/UI.md](docs/UI.md)                               | Admin konzol és Driver PWA felület        |
 | [docs/PERMISSIONS.md](docs/PERMISSIONS.md)             | Szerepkörök, jogosultságok, RBAC mátrix   |
 | [docs/AUTH.md](docs/AUTH.md)                           | Hitelesítés, JWT, munkamenet              |
 | [docs/AI.md](docs/AI.md)                               | AI helyreállítási folyamat és guardrailek |

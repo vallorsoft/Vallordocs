@@ -9,6 +9,10 @@
     "search": "Căutare",
     "retry": "Reîncearcă"
   },
+  "theme": {
+    "switchToLight": "Mod luminos",
+    "switchToDark": "Mod întunecat"
+  },
   "nav": {
     "dashboard": "Tablou de bord",
     "trips": "Transporturi",
@@ -27,10 +31,56 @@
     "subtitle": "Transformă fotografiile documentelor de transport în PDF-uri de calitate profesională, scanată.",
     "status": "Fundația sistemului este pregătită."
   },
+  "dashboard": {
+    "subtitle": "Prezentare generală a activității de azi",
+    "empty": "Nu există încă date de afișat.",
+    "todayUploads": "Încărcări azi",
+    "weekUploads": "Încărcări săptămânal",
+    "aiSuccessRate": "Rată de succes AI",
+    "avgProcessing": "Timp mediu de procesare",
+    "activeDrivers": "Șoferi activi",
+    "storageUsage": "Spațiu utilizat",
+    "topDrivers": "Cei mai activi șoferi",
+    "noDrivers": "Nu există încă date despre șoferi.",
+    "documentCount": "{count} documente"
+  },
+  "documents": {
+    "subtitle": "Gestionarea și procesarea documentelor",
+    "type": "Tip",
+    "status": "Stare",
+    "aiStatus": "Stare AI",
+    "created": "Creat",
+    "runAi": "Procesare AI",
+    "aiQueued": "Documentul a fost pus în coadă pentru procesare.",
+    "filterType": "Filtrează după tip",
+    "filterStatus": "Filtrează după stare",
+    "allTypes": "Toate tipurile",
+    "allStatuses": "Toate stările",
+    "empty": "Nu există documente de afișat."
+  },
+  "docType": {
+    "cmr": "CMR",
+    "invoice": "Factură",
+    "pod": "POD (dovadă de livrare)",
+    "delivery_note": "Aviz de expediție",
+    "adr": "Document ADR",
+    "weight_ticket": "Tichet de cântar",
+    "fuel_receipt": "Bon de combustibil",
+    "toll_receipt": "Bon de taxă de drum",
+    "customs": "Document vamal",
+    "other": "Altul"
+  },
   "documentStatus": {
+    "draft": "Ciornă",
     "uploaded": "Încărcat",
     "processing": "În procesare",
-    "generatingPdf": "Se generează PDF",
+    "ready": "Finalizat",
+    "failed": "Eșuat"
+  },
+  "aiStatus": {
+    "queued": "În coadă",
+    "processing": "În procesare",
+    "generating_pdf": "Se generează PDF",
     "done": "Finalizat",
     "failed": "Eșuat",
     "retrying": "Se reîncearcă",
@@ -53,6 +103,170 @@
     "suspended": "Suspendat",
     "disabled": "Dezactivat"
   },
+  "trips": {
+    "subtitle": "Gestionarea transporturilor",
+    "create": "Transport nou",
+    "created": "Transportul a fost creat.",
+    "empty": "Nu există transporturi de afișat.",
+    "tripNumber": "Număr transport",
+    "orderNumber": "Număr comandă",
+    "origin": "Loc de plecare",
+    "destination": "Destinație",
+    "departure": "Plecare",
+    "arrival": "Sosire",
+    "status": "Stare",
+    "route": "Traseu"
+  },
+  "drivers": {
+    "subtitle": "Gestionarea șoferilor",
+    "create": "Șofer nou",
+    "created": "Șoferul a fost creat.",
+    "empty": "Nu există șoferi de afișat.",
+    "name": "Nume",
+    "code": "Cod șofer",
+    "phone": "Telefon",
+    "email": "E-mail",
+    "license": "Număr permis",
+    "adr": "ADR",
+    "adrCertified": "Certificare ADR",
+    "status": "Stare"
+  },
+  "users": {
+    "subtitle": "Gestionarea utilizatorilor și permisiunilor",
+    "create": "Utilizator nou",
+    "created": "Utilizatorul a fost creat.",
+    "empty": "Nu există utilizatori de afișat.",
+    "name": "Nume",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "password": "Parolă",
+    "roles": "Roluri",
+    "status": "Stare"
+  },
+  "roles": {
+    "platform_owner": "Proprietar platformă",
+    "platform_admin": "Administrator platformă",
+    "tenant_admin": "Administrator companie",
+    "dispatcher": "Dispecer",
+    "office_user": "Utilizator birou",
+    "driver": "Șofer",
+    "read_only": "Doar citire"
+  },
+  "languages": {
+    "hu": "Maghiară",
+    "ro": "Română"
+  },
+  "aiQueue": {
+    "subtitle": "Monitorizarea cozii de procesare AI",
+    "refresh": "Reîmprospătează",
+    "empty": "Nu există sarcini AI.",
+    "document": "Document",
+    "status": "Stare",
+    "provider": "Furnizor",
+    "duration": "Durată",
+    "attempts": "Încercări",
+    "created": "Creat"
+  },
+  "audit": {
+    "subtitle": "Jurnalul evenimentelor de sistem",
+    "empty": "Nu există înregistrări în jurnal.",
+    "time": "Moment",
+    "action": "Acțiune",
+    "entity": "Entitate",
+    "ip": "Adresă IP",
+    "result": "Rezultat",
+    "success": "Reușit",
+    "failure": "Eșuat"
+  },
+  "reports": {
+    "subtitle": "Statistici și rapoarte",
+    "metric": "Indicator",
+    "value": "Valoare"
+  },
+  "settings": {
+    "subtitle": "Setări la nivel de companie",
+    "saved": "Setările au fost salvate.",
+    "localization": "Localizare",
+    "defaultLanguage": "Limbă implicită",
+    "defaultTimezone": "Fus orar implicit",
+    "processing": "Procesare",
+    "aiEnabled": "Activează procesarea AI",
+    "pdfQuality": "Calitate PDF",
+    "quality": {
+      "standard": "Standard",
+      "high": "Înaltă"
+    },
+    "storageLimit": "Limită de stocare (MB)",
+    "retention": "Perioade de păstrare",
+    "documentRetention": "Documente (zile)",
+    "auditRetention": "Audit (zile)",
+    "logRetention": "Jurnale (zile)"
+  },
+  "profile": {
+    "subtitle": "Datele profilului tău",
+    "identity": "Date de identificare",
+    "name": "Nume",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "status": "Stare",
+    "language": "Limbă",
+    "timezone": "Fus orar",
+    "roles": "Roluri"
+  },
+  "tenant": {
+    "subtitle": "Prezentare generală a companiei",
+    "identity": "Date companie",
+    "tenantId": "ID companie",
+    "ai": "AI",
+    "aiEnabled": "Activat",
+    "aiDisabled": "Dezactivat",
+    "editSettings": "Editează setările"
+  },
+  "quality": {
+    "blurry": "Imagine neclară",
+    "motion_blur": "Mișcare la fotografiere",
+    "too_dark": "Prea întunecat",
+    "too_bright": "Prea luminos",
+    "flash_glare": "Reflexie de bliț",
+    "reflection": "Reflexie",
+    "missing_page_part": "Parte de pagină lipsă",
+    "cropped_document": "Document tăiat",
+    "multiple_documents": "Mai multe documente simultan",
+    "finger_in_frame": "Deget în cadru",
+    "wrong_distance": "Distanță greșită",
+    "low_resolution": "Rezoluție scăzută"
+  },
+  "driver": {
+    "nav": {
+      "home": "Acasă",
+      "capture": "Fotografiere",
+      "documents": "Documente"
+    },
+    "captureCta": "Fotografiază document",
+    "stats": {
+      "total": "Total",
+      "processing": "În procesare",
+      "ready": "Finalizat"
+    },
+    "pendingSync": "{count} încărcări așteaptă sincronizarea",
+    "activeTrips": "Transporturi active",
+    "noTrips": "Niciun transport activ.",
+    "selectTrip": "Selectează transportul",
+    "noTrip": "Fără transport",
+    "selectType": "Tip de document",
+    "takePhoto": "Fă o fotografie",
+    "previewAlt": "Previzualizarea fotografiei realizate",
+    "checking": "Verificarea calității…",
+    "qualityOk": "Imaginea este corespunzătoare.",
+    "qualityIssues": "Imaginea conține probleme:",
+    "retake": "Refotografiază",
+    "upload": "Încarcă",
+    "queue": "Pune în coadă",
+    "uploadSent": "Documentul a fost încărcat.",
+    "uploadQueued": "Documentul a fost pus în coadă, se sincronizează la conectare.",
+    "myDocuments": "Documentele mele",
+    "noDocuments": "Niciun document încărcat încă."
+  },
   "errors": {
     "generic": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou mai târziu.",
     "unauthorized": "Nu aveți permisiunea pentru această acțiune.",
@@ -66,6 +280,9 @@
   "validation": {
     "nameTooShort": "Numele trebuie să aibă cel puțin 2 caractere.",
     "email": "Adresă de e-mail invalidă.",
+    "emailInvalid": "Adresă de e-mail invalidă.",
+    "passwordRequired": "Parola este obligatorie.",
+    "tokenRequired": "Token lipsă.",
     "phone": "Număr de telefon invalid.",
     "rolesRequired": "Este necesar cel puțin un rol.",
     "driverCodeRequired": "Codul șoferului este obligatoriu.",
