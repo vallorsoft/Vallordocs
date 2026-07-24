@@ -1,31 +1,32 @@
+'use client';
+
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { landingPath } from '@/lib/landing';
+import { useRouter } from '@/i18n/navigation';
+import { useSession } from '@/components/session-provider';
+import { LoadingState } from '@/components/data-state';
 
 /**
- * Foundation landing page. It only proves the i18n + design-system wiring; the
- * real Admin and Driver surfaces are built in later milestones.
+ * Root entry point. Routes the visitor to their landing area once the session
+ * store has hydrated: signed-in drivers to the PWA, other roles to the admin
+ * console, and anonymous visitors to the login screen (PRD 4. fejezet – Driver
+ * vs Admin felület).
  */
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default function HomePage() {
+  const t = useTranslations('common');
+  const { user, ready } = useSession();
+  const router = useRouter();
 
-  return <HomeContent />;
-}
-
-function HomeContent() {
-  const t = useTranslations('home');
+  useEffect(() => {
+    if (!ready) return;
+    router.replace(user ? landingPath(user.roles) : '/login');
+  }, [ready, user, router]);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
-      <h1 className="text-4xl font-bold tracking-tight">{t('title')}</h1>
-      <p className="text-lg text-muted-foreground">{t('subtitle')}</p>
-      <span className="rounded-full border border-border bg-secondary px-4 py-1 text-sm text-secondary-foreground">
-        {t('status')}
-      </span>
+    <main className="flex min-h-screen items-center justify-center">
+      <span className="sr-only">{t('loading')}</span>
+      <LoadingState />
     </main>
   );
 }

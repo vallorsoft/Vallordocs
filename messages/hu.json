@@ -9,6 +9,10 @@
     "search": "Keresés",
     "retry": "Újrapróbálás"
   },
+  "theme": {
+    "switchToLight": "Világos mód",
+    "switchToDark": "Sötét mód"
+  },
   "nav": {
     "dashboard": "Irányítópult",
     "trips": "Fuvarok",
@@ -27,10 +31,56 @@
     "subtitle": "Fotózott fuvardokumentumaiból professzionális, szkennelt minőségű PDF-eket készít.",
     "status": "A rendszer alapjai készen állnak."
   },
+  "dashboard": {
+    "subtitle": "Áttekintés a mai működésről",
+    "empty": "Még nincs megjeleníthető adat.",
+    "todayUploads": "Mai feltöltések",
+    "weekUploads": "Heti feltöltések",
+    "aiSuccessRate": "AI sikerességi arány",
+    "avgProcessing": "Átlagos feldolgozási idő",
+    "activeDrivers": "Aktív sofőrök",
+    "storageUsage": "Tárhelyhasználat",
+    "topDrivers": "Legaktívabb sofőrök",
+    "noDrivers": "Még nincs sofőradat.",
+    "documentCount": "{count} dokumentum"
+  },
+  "documents": {
+    "subtitle": "Dokumentumok kezelése és feldolgozása",
+    "type": "Típus",
+    "status": "Státusz",
+    "aiStatus": "AI státusz",
+    "created": "Létrehozva",
+    "runAi": "AI feldolgozás",
+    "aiQueued": "A dokumentum sorba került feldolgozásra.",
+    "filterType": "Szűrés típus szerint",
+    "filterStatus": "Szűrés státusz szerint",
+    "allTypes": "Minden típus",
+    "allStatuses": "Minden státusz",
+    "empty": "Nincs megjeleníthető dokumentum."
+  },
+  "docType": {
+    "cmr": "CMR",
+    "invoice": "Számla",
+    "pod": "POD (átvételi igazolás)",
+    "delivery_note": "Szállítólevél",
+    "adr": "ADR dokumentum",
+    "weight_ticket": "Mérlegjegy",
+    "fuel_receipt": "Üzemanyag nyugta",
+    "toll_receipt": "Útdíj bizonylat",
+    "customs": "Vámdokumentum",
+    "other": "Egyéb"
+  },
   "documentStatus": {
+    "draft": "Piszkozat",
     "uploaded": "Feltöltve",
     "processing": "Feldolgozás alatt",
-    "generatingPdf": "PDF készül",
+    "ready": "Kész",
+    "failed": "Sikertelen"
+  },
+  "aiStatus": {
+    "queued": "Sorban áll",
+    "processing": "Feldolgozás alatt",
+    "generating_pdf": "PDF készül",
     "done": "Kész",
     "failed": "Sikertelen",
     "retrying": "Újrapróbálás",
@@ -53,6 +103,170 @@
     "suspended": "Felfüggesztve",
     "disabled": "Letiltva"
   },
+  "trips": {
+    "subtitle": "Fuvarok kezelése",
+    "create": "Új fuvar",
+    "created": "A fuvar létrejött.",
+    "empty": "Nincs megjeleníthető fuvar.",
+    "tripNumber": "Fuvarszám",
+    "orderNumber": "Megbízásszám",
+    "origin": "Indulási hely",
+    "destination": "Érkezési hely",
+    "departure": "Indulás",
+    "arrival": "Érkezés",
+    "status": "Státusz",
+    "route": "Útvonal"
+  },
+  "drivers": {
+    "subtitle": "Sofőrök kezelése",
+    "create": "Új sofőr",
+    "created": "A sofőr létrejött.",
+    "empty": "Nincs megjeleníthető sofőr.",
+    "name": "Név",
+    "code": "Sofőrkód",
+    "phone": "Telefon",
+    "email": "E-mail",
+    "license": "Jogosítvány száma",
+    "adr": "ADR",
+    "adrCertified": "ADR jogosultság",
+    "status": "Státusz"
+  },
+  "users": {
+    "subtitle": "Felhasználók és jogosultságok kezelése",
+    "create": "Új felhasználó",
+    "created": "A felhasználó létrejött.",
+    "empty": "Nincs megjeleníthető felhasználó.",
+    "name": "Név",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "password": "Jelszó",
+    "roles": "Szerepkörök",
+    "status": "Státusz"
+  },
+  "roles": {
+    "platform_owner": "Platform tulajdonos",
+    "platform_admin": "Platform adminisztrátor",
+    "tenant_admin": "Cégadminisztrátor",
+    "dispatcher": "Diszpécser",
+    "office_user": "Irodai felhasználó",
+    "driver": "Sofőr",
+    "read_only": "Csak olvasó"
+  },
+  "languages": {
+    "hu": "Magyar",
+    "ro": "Román"
+  },
+  "aiQueue": {
+    "subtitle": "AI feldolgozási sor figyelése",
+    "refresh": "Frissítés",
+    "empty": "Nincs AI feladat.",
+    "document": "Dokumentum",
+    "status": "Státusz",
+    "provider": "Szolgáltató",
+    "duration": "Időtartam",
+    "attempts": "Próbálkozások",
+    "created": "Létrehozva"
+  },
+  "audit": {
+    "subtitle": "Rendszeresemények naplója",
+    "empty": "Nincs naplóbejegyzés.",
+    "time": "Időpont",
+    "action": "Művelet",
+    "entity": "Entitás",
+    "ip": "IP-cím",
+    "result": "Eredmény",
+    "success": "Sikeres",
+    "failure": "Sikertelen"
+  },
+  "reports": {
+    "subtitle": "Statisztikák és riportok",
+    "metric": "Mutató",
+    "value": "Érték"
+  },
+  "settings": {
+    "subtitle": "Cégszintű beállítások",
+    "saved": "A beállítások mentve.",
+    "localization": "Lokalizáció",
+    "defaultLanguage": "Alapértelmezett nyelv",
+    "defaultTimezone": "Alapértelmezett időzóna",
+    "processing": "Feldolgozás",
+    "aiEnabled": "AI feldolgozás engedélyezése",
+    "pdfQuality": "PDF minőség",
+    "quality": {
+      "standard": "Normál",
+      "high": "Magas"
+    },
+    "storageLimit": "Tárhelykorlát (MB)",
+    "retention": "Megőrzési idők",
+    "documentRetention": "Dokumentum (nap)",
+    "auditRetention": "Audit (nap)",
+    "logRetention": "Napló (nap)"
+  },
+  "profile": {
+    "subtitle": "Saját profil adatai",
+    "identity": "Azonosító adatok",
+    "name": "Név",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "status": "Státusz",
+    "language": "Nyelv",
+    "timezone": "Időzóna",
+    "roles": "Szerepkörök"
+  },
+  "tenant": {
+    "subtitle": "Cég áttekintése",
+    "identity": "Cégadatok",
+    "tenantId": "Cégazonosító",
+    "ai": "AI",
+    "aiEnabled": "Engedélyezve",
+    "aiDisabled": "Letiltva",
+    "editSettings": "Beállítások szerkesztése"
+  },
+  "quality": {
+    "blurry": "Életlen kép",
+    "motion_blur": "Bemozdulás",
+    "too_dark": "Túl sötét",
+    "too_bright": "Túl világos",
+    "flash_glare": "Vakucsillanás",
+    "reflection": "Tükröződés",
+    "missing_page_part": "Hiányzó laprész",
+    "cropped_document": "Levágott dokumentum",
+    "multiple_documents": "Több dokumentum egyszerre",
+    "finger_in_frame": "Ujj a képen",
+    "wrong_distance": "Rossz távolság",
+    "low_resolution": "Alacsony felbontás"
+  },
+  "driver": {
+    "nav": {
+      "home": "Kezdőlap",
+      "capture": "Fotózás",
+      "documents": "Dokumentumok"
+    },
+    "captureCta": "Dokumentum fotózása",
+    "stats": {
+      "total": "Összes",
+      "processing": "Feldolgozás",
+      "ready": "Kész"
+    },
+    "pendingSync": "{count} feltöltés szinkronizálásra vár",
+    "activeTrips": "Aktív fuvarok",
+    "noTrips": "Nincs aktív fuvar.",
+    "selectTrip": "Fuvar kiválasztása",
+    "noTrip": "Nincs fuvar",
+    "selectType": "Dokumentumtípus",
+    "takePhoto": "Fotó készítése",
+    "previewAlt": "A készített fotó előnézete",
+    "checking": "Minőségellenőrzés…",
+    "qualityOk": "A kép megfelelő.",
+    "qualityIssues": "A kép problémákat tartalmaz:",
+    "retake": "Újrafotózás",
+    "upload": "Feltöltés",
+    "queue": "Sorba állítás",
+    "uploadSent": "A dokumentum feltöltve.",
+    "uploadQueued": "A dokumentum sorba állítva, szinkronizálás internetkapcsolatnál.",
+    "myDocuments": "Dokumentumaim",
+    "noDocuments": "Még nincs feltöltött dokumentum."
+  },
   "errors": {
     "generic": "Váratlan hiba történt. Kérjük, próbálja újra később.",
     "unauthorized": "Nincs jogosultsága ehhez a művelethez.",
@@ -66,6 +280,9 @@
   "validation": {
     "nameTooShort": "A név legalább 2 karakter hosszú legyen.",
     "email": "Érvénytelen e-mail cím.",
+    "emailInvalid": "Érvénytelen e-mail cím.",
+    "passwordRequired": "A jelszó megadása kötelező.",
+    "tokenRequired": "Hiányzó token.",
     "phone": "Érvénytelen telefonszám.",
     "rolesRequired": "Legalább egy szerepkör megadása kötelező.",
     "driverCodeRequired": "A sofőrkód megadása kötelező.",
